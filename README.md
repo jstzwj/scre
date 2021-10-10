@@ -1,2 +1,2 @@
-# xre
-Extreme fast regex for Python
+# SCRE
+Sooooo cool regular expression for Python
