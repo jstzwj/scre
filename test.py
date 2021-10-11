@@ -1,3 +1,3 @@
 import scre
 
-p = scre.compile("abc+")
+p = scre.compile("abc?+")

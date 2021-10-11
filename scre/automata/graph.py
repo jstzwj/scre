@@ -6,7 +6,8 @@ import cython
 @cython.cclass
 class State:
     def __init__(self) -> None:
-        pass
+        self.outs: List[Transition] = []
+        self.ins: List[Transition] = []
 
 @cython.cclass
 class Transition:
