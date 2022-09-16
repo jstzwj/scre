@@ -7,7 +7,8 @@ cdef class CharIterator:
     cdef int _index
     cdef OptionChar next(self)
     cdef int advance_by(self, int n)
-    cpdef OptionChar nth(self, int n)
+    cdef OptionChar nth(self, int n)
+    cdef OptionChar look_nth(self, int n)
 
 cdef class Parser:
     cdef str _source
@@ -26,3 +27,10 @@ cdef class Parser:
     cdef OptionChar bump(self)
 
     cpdef parse(self)
+    cdef parse_union(self)
+    cdef parse_concatenation(self)
+    cdef parse_basic(self)
+    cdef parse_elementary(self)
+    cdef parse_char(self)
+    cdef parse_loop(self)
+    

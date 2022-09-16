@@ -1,9 +1,17 @@
+from scre.core.pattern import Pattern
 from scre.core.compile import compile
+
 def match(pattern, string, flags=0):
-    return compile(pattern, flags).match(string)
+    if isinstance(pattern, Pattern):
+        return pattern.match(string, flags=flags)
+    else:
+        return compile(pattern, flags).match(string)
 
 def fullmatch(pattern, string, flags=0):
-    return compile(pattern, flags).fullmatch(string)
+    if isinstance(pattern, Pattern):
+        return pattern.fullmatch(string, flags=flags)
+    else:
+        return compile(pattern, flags).fullmatch(string)
 
 def search(pattern, string, flags=0):
     return compile(pattern, flags).search(string)
@@ -22,9 +30,6 @@ def findall(pattern, string, flags=0):
 
 def finditer(pattern, string, flags=0):
     return compile(pattern, flags).finditer(string)
-
-def compile(pattern, flags=0):
-    return compile(pattern, flags)
 
 # SPECIAL_CHARS
 # closing ')', '}' and ']'

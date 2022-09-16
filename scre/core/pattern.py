@@ -1,11 +1,12 @@
-from scre.core.pattern import Pattern
+from scre.automata.graph import Automaton
 from scre.parser.parser import Parser
 
-class Pattern:
-    def __init__(self) -> None:
-        pass
+class Pattern(object):
+    def __init__(self, automaton: Automaton) -> None:
+        self._automaton = automaton
 
-    def search(self, pattern: str, text: str) -> Pattern:
-        parser = Parser(pattern)
-        ast = parser.parse()
-        print(parser.diagnostic)
+    def match(self, text: str, flags: int) -> bool:
+        return False
+
+    def search(self, text: str) -> "str":
+        return None

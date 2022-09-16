@@ -28,5 +28,10 @@ setuptools.setup(
     ],
     packages=setuptools.find_packages(),
     python_requires='>=3.7',
-    ext_modules=cythonize(extensions, language_level = "3"),
+    ext_modules=cythonize(
+        extensions,
+        language_level = "3",
+        annotate=True,
+        compiler_directives={'language_level' : "3"},   # or "2" or "3str"
+    ),
 )

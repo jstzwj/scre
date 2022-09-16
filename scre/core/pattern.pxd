@@ -1,4 +1,4 @@
 
 
 cdef class Pattern:
-    pass
+    cdef object _automaton

@@ -2,12 +2,9 @@
 import cython
 @cython.cclass
 class OptionChar:
-    def __init__(self, c: str = None):
-        self._char: cython.Py_UCS4 = '\0'
-        self._has_value: cython.bint = False
-        if c is not None:
-            self._char: cython.Py_UCS4 = c
-            self._has_value: cython.bint = True
+    def __init__(self, c: cython.Py_UCS4, has_value: cython.bint):
+        self._char: cython.Py_UCS4 = c
+        self._has_value: cython.bint = has_value
 
     def is_some(self) -> cython.bint:
         return self._has_value
@@ -26,8 +23,8 @@ class OptionChar:
 
     @staticmethod
     def Null() -> 'OptionChar':
-        return OptionChar(None)
+        return OptionChar('\0', False)
 
     @staticmethod
-    def Some(c: str) -> 'OptionChar':
-        return OptionChar(c)
+    def Some(c: cython.Py_UCS4) -> 'OptionChar':
+        return OptionChar(c, True)
