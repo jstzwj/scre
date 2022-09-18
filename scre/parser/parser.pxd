@@ -6,10 +6,10 @@ cdef class CharIterator:
     cdef str _source
     cdef int _len
     cdef int _index
-    cdef OptionChar next(self)
+    cdef Py_UCS4 next(self)
     cdef int advance_by(self, int n)
-    cdef OptionChar nth(self, int n)
-    cdef OptionChar look_nth(self, int n)
+    cdef Py_UCS4 nth(self, int n)
+    cdef Py_UCS4 look_nth(self, int n)
 
 cdef class Parser:
     cdef str _source
@@ -18,14 +18,14 @@ cdef class Parser:
     cdef list _cursor_stack
 
     cdef CharIterator chars(self)
-    cdef OptionChar nth_char(self, n: cython.int)
-    cdef OptionChar first(self)
-    cdef OptionChar second(self)
+    cdef Py_UCS4 nth_char(self, n: cython.int)
+    cdef Py_UCS4 first(self)
+    cdef Py_UCS4 second(self)
     cdef bint is_eof(self)
     cdef push_cursor(self)
     cdef pop_cursor(self)
     cdef drop_cursor(self)
-    cdef OptionChar bump(self)
+    cdef Py_UCS4 bump(self)
 
     cpdef parse(self)
     cdef parse_union(self)

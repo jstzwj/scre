@@ -6,7 +6,6 @@ import numpy as np
 from scre.parser.ast import ExpAny, ExpBase, ExpChar, ExpEOS, ExpGroup, ExpLoop, ExpRE, ExpSimpleRE, ExpBasicRE, ExpElementaryRE
 from scre.basic.diagnostic import Diagnostic
 from scre.basic.source import SourceLocation
-from scre.basic.option_char import OptionChar
 
 @cython.cclass
 class CharIterator:
@@ -15,30 +14,34 @@ class CharIterator:
         self._len: cython.int = len(source)
         self._index: cython.int = index
 
-    def next(self) -> OptionChar:
+    @cython.boundscheck(False)
+    def next(self) -> cython.Py_UCS4:
+        c = cython.declare(cython.Py_UCS4)
         if self._index < self._len:
             c = self._source[self._index]
             self._index += 1
-            return OptionChar.Some(c)
+            return c
         else:
-            return OptionChar.Null()
+            return '\0'
 
     def advance_by(self, n: cython.int) -> cython.int:
         for i in range(n):
-            if self.next().is_null():
+            if self.next() == '\0':
                 return i
         return n
 
-    def nth(self, n: cython.int) -> OptionChar:
+    def nth(self, n: cython.int) -> cython.Py_UCS4:
         self.advance_by(n)
         return self.next()
     
-    def look_nth(self, n: cython.int) -> OptionChar:
+    @cython.boundscheck(False)
+    def look_nth(self, n: cython.int) -> cython.Py_UCS4:
         if self._index + n >= self._len:
-            return OptionChar.Null()
+            return '\0'
         else:
-            return OptionChar.Some(self._source[self._index + n])
+            return self._source[self._index + n]
 
+    @cython.boundscheck(False)
     def as_str(self) -> str:
         return self._source[self._index:]
 
@@ -57,17 +60,17 @@ class Parser:
     def chars(self) -> CharIterator:
         return CharIterator(self._chars._source, self._chars._index)
 
-    def nth_char(self, n: cython.int) -> OptionChar:
+    def nth_char(self, n: cython.int) -> cython.Py_UCS4:
         return self.chars().nth(n)
     
-    def first(self) -> OptionChar:
+    def first(self) -> cython.Py_UCS4:
         return self._chars.look_nth(0)
 
-    def second(self) -> OptionChar:
+    def second(self) -> cython.Py_UCS4:
         return self._chars.look_nth(1)
 
     def is_eof(self) -> cython.bint:
-        return self._chars._index >= len(self._chars._source)
+        return self._chars._index >= self._chars._len
 
     def push_cursor(self) -> None:
         index = self._chars._index
@@ -83,7 +86,7 @@ class Parser:
     def error(self, msg: str) -> None:
         self._diagnostic.error(msg, SourceLocation(self._chars._source, self._chars._index))
 
-    def bump(self) -> OptionChar:
+    def bump(self) -> cython.Py_UCS4:
         return self._chars.next()
 
     # @profile
@@ -102,7 +105,7 @@ class Parser:
 
         while True:
             fst = self.bump()
-            if fst.is_some() or fst.value() != '|':
+            if fst == '\0' or fst != '|':
                 break
             node = self.parse_concatenation()
             if node is None:
@@ -139,9 +142,8 @@ class Parser:
     # @profile
     def parse_basic(self) -> Optional[ExpBasicRE]:
         expr = self.parse_elementary()
-        last_char_opt = self.first()
-        if last_char_opt.is_some():
-            last_char = last_char_opt.value()
+        last_char = self.first()
+        if last_char != '\0':
             if last_char == "+":
                 return ExpLoop(expr=expr, start=1, end=-1, lazy=False)
             elif last_char == "*":
@@ -151,9 +153,8 @@ class Parser:
     
     # @profile
     def parse_elementary(self) -> Optional[ExpElementaryRE]:
-        char_opt = self.first()
-        if char_opt.is_some():
-            c = char_opt.value()
+        c = self.first()
+        if c != '\0':
             if c == "(":
                 return self.parse_group()
             elif c == ".":
@@ -169,8 +170,8 @@ class Parser:
         expr = self.parse_any()
         end = self.bump()
 
-        if start.is_some() and start.value() == "(" and \
-            end.is_some() and end.value() == ")":
+        if start != '\0' and start == "(" and \
+            end != '\0' and end == ")":
             return ExpGroup("Matched", expr)
         else:
             return None
@@ -185,21 +186,21 @@ class Parser:
 
     # @profile
     def parse_char(self) -> Optional[ExpChar]:
-        char_opt = self.bump()
-        if char_opt.is_some():
-            return ExpChar(char_opt.value())
+        c = self.bump()
+        if c != '\0':
+            return c
         else:
             return None
 
     def parse_loop(self) -> Optional[ExpBase]:
         node = self.parse_group()
         loop_char_opt = self.first()
-        if loop_char_opt.is_some():
-            loop_char = loop_char_opt.value()
+        if loop_char_opt != '\0':
+            loop_char = loop_char_opt
             if loop_char in ['+', '*']:
                 self.bump()
                 lazy_char = self.first()
-                if lazy_char.is_some() and lazy_char.value() == '?':
+                if lazy_char != '\0' and lazy_char == '?':
                     return ExpLoop(node, loop_char, True)
                 else:
                     return ExpLoop(node, loop_char, False)
