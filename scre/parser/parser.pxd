@@ -4,6 +4,7 @@ from scre.basic.option_char cimport OptionChar
 
 cdef class CharIterator:
     cdef str _source
+    cdef int _len
     cdef int _index
     cdef OptionChar next(self)
     cdef int advance_by(self, int n)

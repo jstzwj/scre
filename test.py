@@ -20,7 +20,7 @@ print(end - start)
 
 
 import random
-re_string_list = ["abc", "abcd", "abcde"]
+re_string_list = ["abc", "abcd", "abcde", "abcdefghijk"]
 
 start = time.time()
 for i in range(100000):

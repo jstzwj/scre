@@ -1,6 +1,7 @@
 
 from typing import List, Optional
 import cython
+import numpy as np
 
 from scre.parser.ast import ExpAny, ExpBase, ExpChar, ExpEOS, ExpGroup, ExpLoop, ExpRE, ExpSimpleRE, ExpBasicRE, ExpElementaryRE
 from scre.basic.diagnostic import Diagnostic
@@ -11,10 +12,11 @@ from scre.basic.option_char import OptionChar
 class CharIterator:
     def __init__(self, source: str, index: cython.int) -> None:
         self._source: str = source
+        self._len: cython.int = len(source)
         self._index: cython.int = index
 
     def next(self) -> OptionChar:
-        if self._index < len(self._source):
+        if self._index < self._len:
             c = self._source[self._index]
             self._index += 1
             return OptionChar.Some(c)
@@ -32,7 +34,7 @@ class CharIterator:
         return self.next()
     
     def look_nth(self, n: cython.int) -> OptionChar:
-        if self._index + n >= len(self._source):
+        if self._index + n >= self._len:
             return OptionChar.Null()
         else:
             return OptionChar.Some(self._source[self._index + n])
