@@ -20,14 +20,14 @@ re_string_list = [get_re_string() for i in range(TEST_NUM)]
 p = scre.compile(re_string_list[0])
 start = time.time()
 for i in range(TEST_NUM):
-    ret = scre.match(p, "aaaaaaaaaaaaaaaa")
+    ret = p.fullmatch(re_string_list[0])
 end = time.time()
 print(end - start)
 
 p = re.compile(re_string_list[0])
 start = time.time()
 for i in range(TEST_NUM):
-    ret = re.match(p, "aaaaaaaaaaaaaaaa")
+    ret = p.fullmatch(re_string_list[0])
 end = time.time()
 print(end - start)
 
@@ -35,13 +35,13 @@ print(end - start)
 start = time.time()
 for i in range(TEST_NUM):
     p = scre.compile(re_string_list[i])
-    # ret = scre.match(p, "aaaaaaaaaaaaaaaa")
+    ret = p.fullmatch(re_string_list[i])
 end = time.time()
 print(end - start)
 
 start = time.time()
 for i in range(TEST_NUM):
     p = re.compile(re_string_list[i])
-    # ret = re.match(p, "aaaaaaaaaaaaaaaa")
+    ret = p.fullmatch(re_string_list[i])
 end = time.time()
 print(end - start)

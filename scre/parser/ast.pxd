@@ -1,38 +1,28 @@
 
-
 cdef class ExpBase:
-    pass
+    cdef int kind
 
 cdef class ExpRE(ExpBase):
-    cdef list _exprs
+    cdef public list exprs
 
 cdef class ExpSimpleRE(ExpBase):
-    cdef list _exprs
+    cdef public list exprs
 
-cdef class ExpBasicRE(ExpBase):
-    pass
-
-cdef class ExpElementaryRE(ExpBasicRE):
-    pass
-
-cdef class ExpSetItem(ExpBase):
-    pass
-
-cdef class ExpGroup(ExpElementaryRE):
+cdef class ExpGroup(ExpBase):
     cdef str _group_type
     cdef object _expr
 
-cdef class ExpChar(ExpElementaryRE):
-    cdef Py_UCS4 _char
+cdef class ExpChar(ExpBase):
+    cdef Py_UCS4 c
 
-cdef class ItemChar(ExpSetItem):
-    cdef Py_UCS4 _char
+cdef class ItemChar(ExpBase):
+    cdef Py_UCS4 c
 
-cdef class ItemCharRange(ExpSetItem):
+cdef class ItemCharRange(ExpBase):
     cdef list _chars
     cdef bint _positive
 
-cdef class ExpLoop(ExpBasicRE):
+cdef class ExpLoop(ExpBase):
     cdef ExpBase _expr
     cdef int _start
     cdef int _end

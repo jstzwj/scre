@@ -17,7 +17,7 @@ cdef class Parser:
     cdef list _cursor_stack
 
     cdef CharIterator chars(self)
-    cdef Py_UCS4 nth_char(self, n: cython.int)
+    cdef Py_UCS4 nth_char(self, int n)
     cdef Py_UCS4 first(self)
     cdef Py_UCS4 second(self)
     cdef bint is_eof(self)

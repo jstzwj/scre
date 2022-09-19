@@ -127,6 +127,8 @@ class Parser:
             exprs.append(node)
 
         while True:
+            if self.first() == '|':
+                break
             node = self.parse_basic()
             if node is None:
                 break
