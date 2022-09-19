@@ -10,7 +10,7 @@ class Pattern:
     def match(self, text: str, flags: int) -> bool:
         return False
     
-    def _fullmatch(self, text, flags: cython.int, state: State, pos: cython.int) -> bool:
+    def _fullmatch(self, text, flags: cython.int, state, pos: cython.int) -> bool:
         text_length: cython.int = len(text)
         while pos < text_length:
             if len(state.outs) == 1:
