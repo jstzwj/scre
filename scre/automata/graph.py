@@ -46,8 +46,6 @@ class Automaton:
         f.outs.add(t)
         t.ins.add(f)
 
-
-
 def join_automaton(lhs: Automaton, rhs: Automaton):
     ret = Automaton()
     ret._states.clear()
@@ -78,5 +76,3 @@ def union_automaton(lhs: Automaton, rhs: Automaton):
     ret.end.ins.update(lhs.end.ins)
     ret.end.ins.update(rhs.end.ins)
     return ret
-
-

@@ -1,5 +1,4 @@
 
-from enum import auto
 from scre.automata.graph import Automaton, join_automaton, union_automaton
 from scre.parser.ast import ExpAny, ExpChar, ExpEOS, ExpElementaryRE, ExpGroup, ExpLoop, ExpRE, ExpSet, ExpSimpleRE, ExpBasicRE
 
