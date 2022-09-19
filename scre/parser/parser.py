@@ -48,7 +48,6 @@ class CharIterator:
 @cython.cclass
 class Parser:
     def __init__(self, source: str) -> None:
-        self._source = source
         self._chars = CharIterator(source, 0)
         self._diagnostic: Diagnostic = Diagnostic()
         self._cursor_stack: List[int] = []
@@ -188,7 +187,7 @@ class Parser:
     def parse_char(self) -> Optional[ExpChar]:
         c = self.bump()
         if c != '\0':
-            return c
+            return ExpChar(c)
         else:
             return None
 

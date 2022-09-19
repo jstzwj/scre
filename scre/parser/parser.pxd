@@ -12,7 +12,6 @@ cdef class CharIterator:
     cdef Py_UCS4 look_nth(self, int n)
 
 cdef class Parser:
-    cdef str _source
     cdef CharIterator _chars
     cdef Diagnostic _diagnostic
     cdef list _cursor_stack
