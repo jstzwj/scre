@@ -1,4 +1,4 @@
-from scre.automata.graph cimport Automaton
+from scre.automata.graph cimport Automaton, State
 from scre.parser.ast cimport ExpBase, ExpChar, ExpGroup, ExpLoop, ExpRE, ExpSimpleRE
 
 cdef join_automaton(Automaton lhs, Automaton rhs)

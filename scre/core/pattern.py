@@ -14,7 +14,7 @@ class Pattern:
         text_length: cython.int = len(text)
         while pos < text_length:
             if len(state.outs) == 1:
-                n = state.outs[0]
+                n: State = state.outs[0]
                 if n.c == text[pos]:
                     state = n
                     pos += 1

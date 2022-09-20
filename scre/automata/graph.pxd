@@ -1,11 +1,13 @@
+from libcpp.vector cimport vector
+
 cdef class State:
     cdef public Py_UCS4 c
-    cdef public bint virtual
+    cdef public bint is_virtual
     cdef public list outs
     cdef public list ins
 
 cdef class Automaton:
-    cdef list _states
+    cdef vector[State] _states
     cdef int _start
     cdef int _end
 

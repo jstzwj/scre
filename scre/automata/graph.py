@@ -7,7 +7,7 @@ import cython
 class State:
     def __init__(self) -> None:
         self.c: cython.Py_UCS4 = '\0'
-        self.virtual: cython.bint = False
+        self.is_virtual: cython.bint = False
         self.outs: List[State] = list()
         self.ins: List[State] = list()
 
@@ -21,7 +21,7 @@ class Automaton:
     @property
     def start(self):
         return self._states[self._start]
-    
+
     @property
     def end(self):
         return self._states[self._end]
@@ -34,14 +34,14 @@ class Automaton:
 
     def add_virtual_element(self):
         state = State()
-        state.virtual = True
+        state.is_virtual = True
         self._states.append(state)
         return state
 
     def add_element(self, c: cython.Py_UCS4):
         state = State()
         state.c = c
-        state.virtual = False
+        state.is_virtual = False
         self._states.append(state)
         return state
     

@@ -1,12 +1,19 @@
 
 import setuptools
 from Cython.Build import cythonize
+from Cython.Distutils import build_ext
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 extensions = [
-    setuptools.Extension("*", ["scre/*/*.py"])
+    setuptools.Extension(
+        "*",
+        sources=["scre/*/*.py"],
+        language="c++",
+        libraries=["stdc++"],
+        cmdclass = {'build_ext': build_ext},
+    )
 ]
 
 setuptools.setup(

@@ -20,14 +20,14 @@ re_string_list = [get_re_string() for i in range(TEST_NUM)]
 p = scre.compile(re_string_list[0])
 start = time.time()
 for i in range(TEST_NUM):
-    ret = p.fullmatch(re_string_list[i])
+    ret = p.fullmatch(re_string_list[0])
 end = time.time()
 print(end - start)
 
 p = re.compile(re_string_list[0])
 start = time.time()
 for i in range(TEST_NUM):
-    ret = p.fullmatch(re_string_list[i])
+    ret = p.fullmatch(re_string_list[0])
 end = time.time()
 print(end - start)
 
